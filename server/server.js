@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const { testConnection, syncDatabase } = require('./config/database');
 
 // Initialisation de l'application Express
 const app = express();
@@ -11,6 +12,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Connexion à la base de données
+testConnection();
+
+// Synchroniser les modèles avec la base de données
+// Force à false pour ne pas supprimer les données existantes
+syncDatabase(false);
+
 // Routes de base
 app.get('/', (req, res) => {
   res.json({ message: 'Bienvenue sur l\'API de TaskCollab' });
@@ -18,8 +26,8 @@ app.get('/', (req, res) => {
 
 // Importation des routes
 app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/projects', require('./routes/projects'));
-// app.use('/api/tasks', require('./routes/tasks'));
+app.use('/api/projects', require('./routes/projects'));
+app.use('/api/tasks', require('./routes/tasks'));
 
 // Gestion des erreurs
 app.use((err, req, res, next) => {
