@@ -3,13 +3,13 @@ require('dotenv').config();
 
 // Configuration de la base de données
 const sequelize = new Sequelize(
-  process.env.DB_NAME || 'taskcollab_db',
+  process.env.DB_NAME || 'taskcollab',
   process.env.DB_USER || 'root',
   process.env.DB_PASSWORD || '',
   {
-    host: process.env.DB_HOST || 'localhost',
-    dialect: 'mysql',
-    port: process.env.DB_PORT || 3306,
+	host: '127.0.0.1',
+	dialect: 'mysql',
+    port: 3307,
     logging: false,
     pool: {
       max: 5,
